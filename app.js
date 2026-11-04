@@ -2,7 +2,7 @@
 //  Fuel — bulk dashboard (vanilla JS, saves to localStorage)
 // ============================================================================
 (() => {
-const { STORES, PRODUCTS, RECIPES, ROTATION, SLOTS, DAILY_FIXED, CAMPUS, TEMPLATES, CAL_NOTES, FASTFOOD, PROFILE, GOALS, BUDGET } = DATA;
+const { STORES, PRODUCTS, RECIPES, ROTATION, SLOTS, DAILY_FIXED, CAMPUS, TEMPLATES, CAL_NOTES, FASTFOOD, OVERRIDES = {}, PREP = null, PROFILE, GOALS, BUDGET } = DATA;
 const KEY = "fuelos.v1";
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -37,7 +37,7 @@ const IC = {
 };
 const I = (n) => `<svg class="i" viewBox="0 0 24 24">${IC[n] || ""}</svg>`;
 const CB = `<svg viewBox="0 0 24 24"><path d="M5 12.5 9.5 17 19 7.5"/></svg>`;
-const recipeIcon = (id) => ({ burritos: "sunrise", shake: "cup", milkglass: "cup", pbsand: "layers" }[id] || "bowl");
+const recipeIcon = (id) => ({ burritos: "sunrise", pscramble: "sunrise", shake: "cup", pshake: "cup", milkglass: "cup", pbsand: "layers", pbites: "layers" }[id] || "bowl");
 
 // ---------- dates ----------
 const pad = (n) => String(n).padStart(2, "0");
@@ -78,6 +78,8 @@ const weekIndex = (d) => Math.floor(daysBetween(parse(S.settings.planStart), d) 
 const rotationFor = (wk) => ROTATION[((wk % 3) + 3) % 3];
 function planFor(d) {
   const wk = weekIndex(d); if (wk < 0) return null;
+  const ov = OVERRIDES[iso(d)];
+  if (ov) return { wk, prep: true, rot: { name: PREP?.label || "Your prep", mains: [] }, items: ov.map(([time, id, srv, where, heat, note]) => ({ time, id, srv, where, heat, note })) };
   const rot = rotationFor(wk), w = wd(d), [L, D] = SLOTS[w];
   const items = TEMPLATES[w].map(([time, ref, srv, where, heat, note]) => ({ time, id: ref === "L" ? rot.mains[L] : ref === "D" ? rot.mains[D] : ref, srv, where, heat, note }));
   (rot.extras || []).forEach(([time, id, srv, where, heat, note]) => items.push({ time, id, srv, where, heat, note }));
@@ -223,7 +225,7 @@ V.dash = () => {
           <div class="ic">${I(recipeIcon(it.id))}</div>
           <div><span class="ttl" data-act="recipe" data-id="${it.id}">${it.srv > 1 ? `${it.srv}× ` : ""}${esc(r.short)}</span><span class="nextpill">Up next</span>
             <div class="meta">${oc ? `<span class="tag campus">${I("campus")}Campus</span>` : `<span class="tag home">${I("home")}Home</span>`}
-              ${it.heat === "microwave" ? `<span class="tag">${I("bolt")}Microwave</span>` : it.heat === "cold" ? `<span class="tag">${I("snow")}Eat cold</span>` : ""}</div>
+              ${it.heat === "microwave" ? `<span class="tag">${I("bolt")}Microwave</span>` : it.heat === "cold" ? `<span class="tag">${I("snow")}Eat cold</span>` : it.heat === "cook" ? `<span class="tag">${I("sunrise")}Cook fresh</span>` : ""}</div>
             <div class="mac"><b style="color:var(--kcal)">${R0(m[0])}</b> kcal · <b style="color:var(--pro)">${R0(m[1])}</b> g protein · <b style="color:var(--carb)">${R0(m[2])}</b> g carbs</div>
             ${it.note ? `<div class="note">${esc(it.note)}</div>` : ""}</div>
           <button class="go" data-act="recipe" data-id="${it.id}" title="Recipe">${I("right")}</button></div>`; }).join("")}</div>
@@ -285,7 +287,9 @@ function updateDash() {
 //  WEEK PLAN
 // ============================================================================
 V.plan = () => {
-  const start = addDays(cur, -wd(cur)), wk = weekIndex(start), rot = rotationFor(Math.max(wk, 0));
+  const start = addDays(cur, -wd(cur)), wk = weekIndex(start), rot0 = rotationFor(Math.max(wk, 0));
+  const prepWeek = !!PREP && Array.from({ length: 7 }, (_, i) => iso(addDays(start, i))).some((k) => OVERRIDES[k]);
+  const rot = prepWeek ? { ...rot0, name: PREP.label } : rot0;
   const days = Array.from({ length: 7 }, (_, i) => { const d = addDays(start, i), p = planFor(d), camp = CAMPUS[i];
     const tot = p ? p.items.reduce((a, it) => recipeMacros(it.id, it.srv).map((v, j) => a[j] + v), [0, 0, 0]) : [0, 0, 0];
     return `<div class="day ${iso(d) === iso(today) ? "today" : ""}" data-act="goto" data-d="${iso(d)}" style="--i:${i}">
@@ -299,10 +303,13 @@ V.plan = () => {
     <div class="seg"><button data-act="pweek" data-n="-7">${I("left")}</button><button data-act="today">This week</button><button data-act="pweek" data-n="7">${I("right")}</button></div></div>
   <div class="week st">${days}</div>
   <div class="grid g2" style="margin-top:16px">
-    <div class="card st" style="--i:7"><div class="ch"><h3>Sunday prep</h3><span class="sp"></span><span class="sub">4 batches cover the week</span></div>
+    ${prepWeek ? `<div class="card st" style="--i:7"><div class="ch"><h3>${esc(PREP.label)}</h3><span class="sp"></span><span class="sub">what you have this week</span></div>
+      ${PREP.inventory.map(([a, b]) => `<div class="list-item" style="grid-template-columns:1fr auto"><div style="font-weight:500">${esc(a)}</div><div class="small muted">${esc(b)}</div></div>`).join("")}
+      <div class="callout" style="margin-bottom:0"><b>Food safety:</b> ${esc(PREP.freeze)}</div></div>`
+    : `<div class="card st" style="--i:7"><div class="ch"><h3>Sunday prep</h3><span class="sp"></span><span class="sub">4 batches cover the week</span></div>
       ${["burritos", ...rot.mains].map((id) => { const r = RECIPES[id], m = recipeMacros(id);
         return `<div class="list-item"><div class="ic">${I(recipeIcon(id))}</div><div><div style="font-weight:600">${esc(r.name)}</div><div class="small muted">${r.method} · ${r.time} · ${r.servings} ${r.servingLabel}s · ${R0(m[0])} kcal each</div></div>
-          <button class="btn sm" data-act="recipe" data-id="${id}">Recipe</button></div>`; }).join("")}</div>
+          <button class="btn sm" data-act="recipe" data-id="${id}">Recipe</button></div>`; }).join("")}</div>`}
     <div class="card st" style="--i:8"><div class="ch"><h3>Game plan</h3></div><ol class="steps">
       <li><b>Saturday:</b> shop Sam's → Walmart → H-E-B. The Groceries tab has the list in store order.</li>
       <li><b>Sunday morning:</b> start the crockpot recipe first. Rice and sheet-pan meals cook while it runs.</li>
@@ -320,7 +327,7 @@ V.recipes = () => `
   <div class="top"><div><div class="eyebrow">${Object.keys(RECIPES).length} recipes · 6 from your TikToks · no vegetables</div><h1>Recipes</h1></div></div>
   <div class="rgrid st">${Object.entries(RECIPES).map(([id, r], i) => { const m = recipeMacros(id);
     return `<div class="card rc" data-act="recipe" data-id="${id}" style="--i:${i}">
-      <div style="display:flex;align-items:center;gap:8px"><div class="ic">${I(recipeIcon(id))}</div><span class="sp"></span>${r.source?.url ? `<span class="tag src">TikTok ${esc(r.source.handle)}</span>` : r.source ? `<span class="tag src">${I("star")}Your pick</span>` : ""}</div>
+      <div style="display:flex;align-items:center;gap:8px"><div class="ic">${I(recipeIcon(id))}</div><span class="sp"></span>${r.source?.url ? `<span class="tag src">TikTok ${esc(r.source.handle)}</span>` : r.source ? `<span class="tag src">${I("star")}${esc(r.source.handle)}</span>` : ""}</div>
       <h4>${esc(r.name)}</h4>
       <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag">${r.method}</span><span class="tag">${r.time}</span><span class="tag">${r.servings} ${r.servingLabel}${r.servings > 1 ? "s" : ""}</span></div>
       <div class="macros"><div><b style="color:var(--kcal)">${R0(m[0])}</b><span>kcal</span></div><div><b style="color:var(--pro)">${R0(m[1])}g</b><span>protein</span></div><div><b style="color:var(--carb)">${R0(m[2])}g</b><span>carbs</span></div></div></div>`; }).join("")}</div>`;
@@ -385,6 +392,7 @@ V.grocery = () => {
   <div class="top"><div><div class="eyebrow">${rotationFor(gw).name} · shop Sat ${fmtShort(addDays(wkStart, -2))} for the week of ${fmtShort(wkStart)}</div><h1>Week ${gw + 1} groceries</h1></div><span class="sp"></span>
     <button class="btn noprint" onclick="window.print()">${I("print")}Print</button>
     <div class="seg"><button data-act="gweek" data-n="-1">${I("left")}</button><button disabled style="cursor:default">Week ${gw + 1}</button><button data-act="gweek" data-n="1">${I("right")}</button></div></div>
+  ${Object.keys(OVERRIDES).some((k) => { const n = daysBetween(wkStart, parse(k)); return n >= 0 && n < 7; }) ? `<div class="callout" style="margin:0 0 14px">This week you're eating ${esc(PREP?.label || "your own prep")} (see the Dashboard and Week plan), so you can skip this list. It shows the regular rotation for reference.</div>` : ""}
   <div class="card st"><div class="budget">
     <div><div class="small muted">Week total</div><div class="amt" style="color:${pct > 100 ? "var(--bad)" : "var(--text)"}">$<span data-count="${total.toFixed(2)}" data-dec="2">0</span></div></div>
     <div style="flex:1;min-width:220px"><div class="bar" style="height:10px"><i data-w="${Math.min(pct, 100)}" style="background:var(--text)"></i></div>

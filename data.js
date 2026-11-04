@@ -5,7 +5,7 @@
 //  — confirm in the store apps; you can edit any aisle # inside the app.
 // ============================================================================
 const DATA = (() => {
-  const S = { W: "Walmart Supercenter — Harvey Mitchell", H: "H-E-B — Tejas Center", C: "Sam's Club — College Station" };
+  const S = { W: "Walmart Supercenter — Harvey Mitchell", H: "H-E-B — Tejas Center", C: "Sam's Club — College Station", A: "Amazon" };
 
   // id: [name, store, section, where-to-look, packGrams, price, [kcal,P,C]/100g, unitLabel]
   const P = {
@@ -51,6 +51,16 @@ const DATA = (() => {
     zatarain:  ["Zatarain's Blackened Chicken Alfredo Pasta Dinner Kit", "H", "Boxed Dinners", "Rice & boxed-dinner aisle (Zatarain's section)", 227, 2.48, [380, 13, 70], "box"],
     skirt:     ["H-E-B Beef Inside Skirt Steak (per lb)", "H", "Meat", "Fresh meat case — fajita/skirt section", 454, 9.98, [240, 19.5, 0], "lb"],
     shrimp:    ["H-E-B Raw Peeled & Deveined Shrimp 41/50, 1 lb", "H", "Frozen Seafood", "Frozen seafood doors by the seafood counter", 454, 6.98, [85, 20, 0.2], "bag"],
+    // ---------------- Logan's Monday prep (week of Nov 2) — macros from the H-E-B labels ----------------
+    p_breast:  ["H-E-B Boneless Skinless Chicken Breasts, Value Pack (~4.85 lb)", "H", "Meat", "Fresh chicken case", 2200, 13.53, [120, 22.5, 0], "pack"],
+    p_beef96:  ["H-E-B 96% Lean Ground Beef, 2 lb", "H", "Meat", "Fresh meat case — ground beef", 907, 13.98, [123, 21.2, 0], "pack"],
+    p_taco:    ["Old El Paso Original Taco Seasoning, 1 oz", "H", "Mexican Foods", "Hispanic foods aisle", 28, 0.98, [268, 0, 54], "packet"],
+    p_sausage: ["H-E-B Premium Smoked Sausage Links, Jalapeño, Texas-Size 10 ct", "H", "Meat", "Packaged sausage case", 810, 9.98, [247, 17.3, 2.5], "pack"],
+    p_alfredo: ["Zatarain's Frozen Blackened Chicken Alfredo, Family Size", "H", "Frozen", "Frozen entrées", 1380, 9.48, [139, 5.2, 16.1], "bag"],
+    p_bites:   ["Tyson Any'tizers Buffalo Style Boneless Chicken Bites, 24 oz", "H", "Frozen", "Frozen chicken / appetizers", 680, 10.98, [200, 14.1, 15.3], "bag"],
+    p_eggs:    ["Hill Country Fare Large White Eggs, 36 ct", "H", "Dairy", "Egg cooler", 1800, 8.48, [140, 12, 0.8], "carton"],
+    p_chorizo: ["Chorizo de San Manuel Beef Chorizo, 12 oz", "H", "Meat", "Packaged sausage / chorizo case", 340, 2.98, [247, 17.6, 3.5], "pack"],
+    p_whey:    ["Optimum Nutrition Gold Standard Whey, Vanilla Ice Cream, 5 lb", "A", "Supplements", "Online", 2270, 74.99, [387, 77.4, 9.7], "tub"],
     // ---------------- Sam's Club (College Station) ----------------
     thighs:    ["Member's Mark Boneless Skinless Chicken Thighs (~6 lb)", "C", "Fresh Meat", "Meat cooler along the back wall", 2722, 16.48, [121, 19.7, 0], "pack"],
     cheese:    ["Member's Mark Shredded Mexican Blend, 2.5 lb", "C", "Dairy & Cheese", "Walk-in dairy cooler — shredded cheese", 1134, 10.48, [400, 23, 2], "bag"],
@@ -221,6 +231,51 @@ const DATA = (() => {
         "Build 5 bowls: rice, meat, about 3 Tbsp cheese. Microwave 2:00.",
       ],
     },
+    // ---------- Logan's Monday prep (week of Nov 2) ----------
+    pscramble: {
+      name: "Chorizo & Egg Scramble with Rice", short: "Chorizo & Egg Scramble", source: { handle: "Your prep", url: null, note: "Eggs plus the half pack of San Manuel beef chorizo, which works out to about 1 oz a morning for 6 days." },
+      servings: 1, servingLabel: "plate", method: "Skillet", time: "8 min", tags: ["home"],
+      ingredients: [["p_eggs", 200, "4 large eggs"], ["p_chorizo", 28, "1 oz beef chorizo (⅙ of your half pack)"], ["rice", 57, "1 cup cooked white rice"]],
+      steps: ["Crumble the chorizo into a non-stick pan on medium and cook 3–4 min until browned. Don't drain; the fat is calories you want.",
+        "Lower the heat, add the 4 whisked eggs, and stir slowly until just set, about 2 min.",
+        "Serve over 1 cup of warmed rice (microwave 1 min with a splash of water)."],
+    },
+    pshake: {
+      name: "Vanilla Protein Milkshake", short: "Protein Shake", source: { handle: "Your prep", url: null, note: "1 scoop of Optimum Nutrition Vanilla Ice Cream whey in 3 cups of whole milk. Your food already covers protein, so the milk adds the calories." },
+      servings: 1, servingLabel: "shake", method: "Shaker / blender", time: "1 min", tags: ["no-cook"],
+      ingredients: [["p_whey", 31, "1 scoop whey (Vanilla Ice Cream)"], ["milk", 732, "3 cups whole milk"]],
+      steps: ["Add the milk first, then the scoop, and shake or blend 20 sec.", "On Mon/Wed, make it before you leave and drink it on the way."],
+    },
+    pchicken: {
+      name: "Chicken Breast & Rice", short: "Chicken & Rice", source: { handle: "Your prep", url: null, note: "The 4.85 lb value pack split into 8 even portions (about 7 oz cooked each)." },
+      servings: 1, servingLabel: "container", method: "Reheat", time: "2.5 min", tags: ["microwave", "campus"],
+      ingredients: [["p_breast", 275, "⅛ of the cooked chicken (about 7 oz cooked)"], ["rice", 114, "2 cups cooked white rice"]],
+      steps: ["Sprinkle 1 Tbsp water over the rice, cover loosely, and microwave 2:30, stirring halfway.", "Chicken breast dries out; a splash of water or a sauce packet helps."],
+    },
+    pbeef: {
+      name: "Taco Beef & Rice", short: "Taco Beef & Rice", source: { handle: "Your prep", url: null, note: "2 lb of H-E-B 96% lean beef with 1 packet of Old El Paso taco seasoning, split into 4 portions." },
+      servings: 1, servingLabel: "container", method: "Reheat", time: "2.5 min", tags: ["microwave", "campus"],
+      ingredients: [["p_beef96", 227, "¼ of the taco beef (½ lb raw)"], ["p_taco", 7, "¼ packet taco seasoning (already mixed in)"], ["rice", 114, "2 cups cooked white rice"]],
+      steps: ["Microwave 2:30 with 1 Tbsp water, stirring halfway."],
+    },
+    psausage: {
+      name: "Jalapeño Sausage & Rice", short: "Jalapeño Sausage & Rice", source: { handle: "Your prep", url: null, note: "2 of the 10 H-E-B Texas-size jalapeño links per meal (5 meals)." },
+      servings: 1, servingLabel: "container", method: "Reheat", time: "2 min", tags: ["microwave", "campus"],
+      ingredients: [["p_sausage", 162, "2 jalapeño smoked sausage links, sliced"], ["rice", 114, "2 cups cooked white rice"]],
+      steps: ["Slice the links into coins so they heat evenly.", "Microwave 2:00 with the rice, covered."],
+    },
+    palfredo: {
+      name: "Zatarain's Blackened Chicken Alfredo (2 cups)", short: "Blackened Alfredo", source: { handle: "Your prep", url: null, note: "Family-size bag, about 6 cups, so 3 meals of 2 cups." },
+      servings: 1, servingLabel: "bowl", method: "Reheat", time: "2.5 min", tags: ["microwave"],
+      ingredients: [["p_alfredo", 460, "2 cups blackened chicken alfredo"]],
+      steps: ["Add a splash of milk, cover, and microwave 2:30, stirring halfway so the sauce stays creamy."],
+    },
+    pbites: {
+      name: "Buffalo Chicken Bites (6 oz)", short: "Buffalo Chicken Bites", source: { handle: "Your prep", url: null, note: "Tyson Any'tizers, 24 oz bag: 4 snacks of 6 oz (2 label servings)." },
+      servings: 1, servingLabel: "snack", method: "Reheat", time: "1.5 min", tags: ["microwave"],
+      ingredients: [["p_bites", 170, "6 oz buffalo chicken bites (about 6–7 pieces)"]],
+      steps: ["Microwave 1:30, or air fry 4 min at 380°F to crisp them back up."],
+    },
     shake: {
       name: "Homemade Mass-Gainer Shake", short: "Mass Gainer Shake", emoji: "🥤",
       source: null, servings: 1, servingLabel: "shake", method: "Blender", time: "3 min", tags: ["no-cook", "home"],
@@ -292,6 +347,41 @@ const DATA = (() => {
                    "🛢️ SPE Tech Dev (AWA Oilfield), 6–7 PM, RICH 910. Have dinner at 5:15 between events, or pack it."],
   };
 
+  // Prepped-food weeks: these dates replace the rotation. [time, recipeId, servings, where, heat, note]
+  const OVERRIDES = {
+    "2026-11-03": [["8:30", "pscramble", 1, "home", "cook", ""], ["9:30", "pshake", 1, "home", "none", ""],
+      ["12:30", "pchicken", 1, "campus", "microwave", "Packed"], ["16:00", "lonestar", 1, "home", "microwave", "Home after class"],
+      ["18:30", "pbeef", 1, "home", "microwave", ""], ["20:00", "pbites", 1, "home", "microwave", ""],
+      ["21:30", "psausage", 1, "home", "microwave", ""], ["22:00", "milkglass", 1, "home", "none", ""]],
+    "2026-11-04": [["7:00", "pscramble", 1, "home", "cook", "Before you leave"], ["7:15", "pshake", 1, "home", "none", "Drink on the way"],
+      ["10:30", "pchicken", 1, "campus", "microwave", "Eat before the 11:30 midterm"], ["13:30", "lonestar", 1, "campus", "microwave", "Packed"],
+      ["16:30", "psausage", 1, "campus", "microwave", "Packed (lunch bag + ice pack)"], ["19:15", "palfredo", 1, "home", "microwave", "After the SPE talk"],
+      ["21:00", "milkglass", 1, "home", "none", ""], ["22:00", "milkglass", 1, "home", "none", "Second glass: Wednesday top-up"]],
+    "2026-11-05": [["8:30", "pscramble", 1, "home", "cook", ""], ["9:30", "pshake", 1, "home", "none", ""],
+      ["11:45", "pbites", 1, "campus", "microwave", "Packed, between classes"], ["13:15", "pbeef", 1, "home", "microwave", ""],
+      ["17:15", "lonestar", 1, "home", "microwave", "Between the two SPE events"], ["19:30", "pchicken", 1, "home", "microwave", ""],
+      ["21:30", "psausage", 1, "home", "microwave", ""], ["22:00", "milkglass", 1, "home", "none", ""]],
+    "2026-11-06": [["9:00", "pscramble", 1, "home", "cook", ""], ["10:00", "pshake", 1, "home", "none", ""],
+      ["12:30", "pchicken", 1, "home", "microwave", "Thawed overnight"], ["15:30", "palfredo", 1, "home", "microwave", ""],
+      ["18:30", "pbeef", 1, "home", "microwave", "Thawed overnight"], ["20:30", "pchicken", 1, "home", "microwave", ""],
+      ["21:30", "psausage", 1, "home", "microwave", ""], ["22:00", "milkglass", 1, "home", "none", ""]],
+    "2026-11-07": [["9:30", "pscramble", 1, "home", "cook", ""], ["10:30", "pshake", 1, "home", "none", ""],
+      ["13:00", "pchicken", 1, "home", "microwave", "Thawed overnight"], ["16:00", "palfredo", 1, "home", "microwave", ""],
+      ["18:30", "lonestar", 1, "home", "microwave", "Thawed overnight"], ["20:30", "pbites", 1, "home", "microwave", ""],
+      ["21:30", "psausage", 1, "home", "microwave", ""], ["22:00", "milkglass", 1, "home", "none", ""]],
+    "2026-11-08": [["9:30", "pscramble", 1, "home", "cook", ""], ["10:30", "pshake", 1, "home", "none", ""],
+      ["13:00", "pchicken", 1, "home", "microwave", "Thawed overnight"], ["16:00", "pbeef", 1, "home", "microwave", "Thawed overnight"],
+      ["18:30", "lonestar", 1, "home", "microwave", "Thawed overnight"], ["20:30", "pbites", 1, "home", "microwave", ""],
+      ["21:30", "pchicken", 1, "home", "microwave", ""], ["22:00", "milkglass", 1, "home", "none", "Shop and prep for next week today"]],
+  };
+  const PREP = {
+    label: "Your Monday prep", from: "2026-11-02", to: "2026-11-08",
+    inventory: [["Chicken breast", "8 portions (4.85 lb)"], ["Taco ground beef", "4 portions (2 lb)"], ["Jalapeño sausage", "10 links → 5 meals"],
+      ["Lone Star Spaghetti", "5 containers"], ["Blackened Chicken Alfredo", "~6 cups → 3 meals"], ["Buffalo chicken bites", "24 oz → 4 snacks"],
+      ["Eggs + chorizo", "36 eggs, ½ pack chorizo"], ["Whole milk", "~2 gallons for the week"], ["Whey protein", "1 scoop a day"], ["White rice", "2 cups per rice meal (cook more as needed)"]],
+    freeze: "Cooked food is good for about 4 days in the fridge, so Monday's prep is fine through Thursday. Tonight (Tue), freeze the Fri–Sun portions: 5 chicken, 2 taco beef, 2 Lone Star, and their rice. Move each one to the fridge the night before. Sausage links keep about a week in the fridge. If the alfredo and bites are still in their frozen bags, cook them the day you eat them.",
+  };
+
   // Fast food. Components: [name, kcal, protein, carbs]. Macros are approximate, from each chain's
   // published nutrition info; check the chain's app for current numbers. Prices are rough BCS estimates.
   const FASTFOOD = [
@@ -319,6 +409,6 @@ const DATA = (() => {
   const GOALS = { kcal: 5000, protein: 220, carbs: 400 };
   const BUDGET = 100;
 
-  return { STORES: S, PRODUCTS: P, RECIPES: R, ROTATION, SLOTS, DAILY_FIXED, CAMPUS, TEMPLATES, CAL_NOTES, FASTFOOD, PROFILE, GOALS, BUDGET };
+  return { STORES: S, PRODUCTS: P, RECIPES: R, ROTATION, SLOTS, DAILY_FIXED, CAMPUS, TEMPLATES, CAL_NOTES, FASTFOOD, OVERRIDES, PREP, PROFILE, GOALS, BUDGET };
 })();
 if (typeof module !== "undefined") module.exports = DATA;
