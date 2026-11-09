@@ -2,7 +2,7 @@
 //  Fuel — bulk dashboard (vanilla JS, saves to localStorage)
 // ============================================================================
 (() => {
-const { STORES, PRODUCTS, RECIPES, ROTATION, SLOTS, DAILY_FIXED, CAMPUS, TEMPLATES, CAL_NOTES, FASTFOOD, OVERRIDES = {}, SWAPS = [], PREP = null, PROFILE, GOALS, BUDGET } = DATA;
+const { STORES, PRODUCTS, RECIPES, ROTATION, SLOTS, DAILY_FIXED, CAMPUS, TEMPLATES, CAL_NOTES, FASTFOOD, OVERRIDES = {}, SWAPS = [], PREP = [], PROFILE, GOALS, BUDGET } = DATA;
 const KEY = "fuelos.v1";
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -75,11 +75,13 @@ const recipeMacros = (id, srv = 1) => {
   return t.map((x) => (x / r.servings) * srv);
 };
 const weekIndex = (d) => Math.floor(daysBetween(parse(S.settings.planStart), d) / 7);
+const prepFor = (d) => [].concat(PREP || []).find((p) => iso(d) >= p.from && iso(d) <= p.to) || null;
+const prepInWeek = (start) => Array.from({ length: 7 }, (_, i) => addDays(start, i)).filter((d) => OVERRIDES[iso(d)]).map(prepFor).find(Boolean) || null;
 const rotationFor = (wk) => ROTATION[((wk % 3) + 3) % 3];
 function planFor(d) {
   const wk = weekIndex(d); if (wk < 0) return null;
   const ov = OVERRIDES[iso(d)];
-  if (ov) return { wk, prep: true, rot: { name: PREP?.label || "Your prep", mains: [] }, items: ov.map(([time, id, srv, where, heat, note]) => ({ time, id, srv, where, heat, note })) };
+  if (ov) return { wk, prep: true, rot: { name: prepFor(d)?.label || "Your prep", mains: [] }, items: ov.map(([time, id, srv, where, heat, note]) => ({ time, id, srv, where, heat, note })) };
   const rot = rotationFor(wk), w = wd(d), [L, D] = SLOTS[w];
   const items = TEMPLATES[w].map(([time, ref, srv, where, heat, note]) => ({ time, id: ref === "L" ? rot.mains[L] : ref === "D" ? rot.mains[D] : ref, srv, where, heat, note }));
   (rot.extras || []).forEach(([time, id, srv, where, heat, note]) => items.push({ time, id, srv, where, heat, note }));
@@ -297,8 +299,8 @@ function updateDash() {
 // ============================================================================
 V.plan = () => {
   const start = addDays(cur, -wd(cur)), wk = weekIndex(start), rot0 = rotationFor(Math.max(wk, 0));
-  const prepWeek = !!PREP && Array.from({ length: 7 }, (_, i) => iso(addDays(start, i))).some((k) => OVERRIDES[k]);
-  const rot = prepWeek ? { ...rot0, name: PREP.label } : rot0;
+  const PW = prepInWeek(start), prepWeek = !!PW;
+  const rot = prepWeek ? { ...rot0, name: PW.label } : rot0;
   const days = Array.from({ length: 7 }, (_, i) => { const d = addDays(start, i), p = planFor(d), camp = CAMPUS[i];
     const tot = p ? p.items.reduce((a, it) => recipeMacros(it.id, it.srv).map((v, j) => a[j] + v), [0, 0, 0]) : [0, 0, 0];
     return `<div class="day ${iso(d) === iso(today) ? "today" : ""}" data-act="goto" data-d="${iso(d)}" style="--i:${i}">
@@ -312,9 +314,9 @@ V.plan = () => {
     <div class="seg"><button data-act="pweek" data-n="-7">${I("left")}</button><button data-act="today">This week</button><button data-act="pweek" data-n="7">${I("right")}</button></div></div>
   <div class="week st">${days}</div>
   <div class="grid g2" style="margin-top:16px">
-    ${prepWeek ? `<div class="card st" style="--i:7"><div class="ch"><h3>${esc(PREP.label)}</h3><span class="sp"></span><span class="sub">what you have this week</span></div>
-      ${PREP.inventory.map(([a, b]) => `<div class="list-item" style="grid-template-columns:1fr auto"><div style="font-weight:500">${esc(a)}</div><div class="small muted">${esc(b)}</div></div>`).join("")}
-      <div class="callout" style="margin-bottom:0"><b>Food safety:</b> ${esc(PREP.freeze)}</div></div>`
+    ${prepWeek ? `<div class="card st" style="--i:7"><div class="ch"><h3>${esc(PW.label)}</h3><span class="sp"></span><span class="sub">what you have this week</span></div>
+      ${PW.inventory.map(([a, b]) => `<div class="list-item" style="grid-template-columns:1fr auto"><div style="font-weight:500">${esc(a)}</div><div class="small muted">${esc(b)}</div></div>`).join("")}
+      <div class="callout" style="margin-bottom:0"><b>Food safety:</b> ${esc(PW.freeze)}</div></div>`
     : `<div class="card st" style="--i:7"><div class="ch"><h3>Sunday prep</h3><span class="sp"></span><span class="sub">4 batches cover the week</span></div>
       ${["burritos", ...rot.mains].map((id) => { const r = RECIPES[id], m = recipeMacros(id);
         return `<div class="list-item"><div class="ic">${I(recipeIcon(id))}</div><div><div style="font-weight:600">${esc(r.name)}</div><div class="small muted">${r.method} · ${r.time} · ${r.servings} ${r.servingLabel}s · ${R0(m[0])} kcal each</div></div>
@@ -401,7 +403,7 @@ V.grocery = () => {
   <div class="top"><div><div class="eyebrow">${rotationFor(gw).name} · shop Sat ${fmtShort(addDays(wkStart, -2))} for the week of ${fmtShort(wkStart)}</div><h1>Week ${gw + 1} groceries</h1></div><span class="sp"></span>
     <button class="btn noprint" onclick="window.print()">${I("print")}Print</button>
     <div class="seg"><button data-act="gweek" data-n="-1">${I("left")}</button><button disabled style="cursor:default">Week ${gw + 1}</button><button data-act="gweek" data-n="1">${I("right")}</button></div></div>
-  ${Object.keys(OVERRIDES).some((k) => { const n = daysBetween(wkStart, parse(k)); return n >= 0 && n < 7; }) ? `<div class="callout" style="margin:0 0 14px">This week you're eating ${esc(PREP?.label || "your own prep")} (see the Dashboard and Week plan), so you can skip this list. It shows the regular rotation for reference.</div>` : ""}
+  ${Object.keys(OVERRIDES).some((k) => { const n = daysBetween(wkStart, parse(k)); return n >= 0 && n < 7; }) ? `<div class="callout" style="margin:0 0 14px">This week you're eating ${esc(prepInWeek(wkStart)?.label || "your own prep")} (see the Dashboard and Week plan), so you can skip this list. It shows the regular rotation for reference.</div>` : ""}
   <div class="card st"><div class="budget">
     <div><div class="small muted">Week total</div><div class="amt" style="color:${pct > 100 ? "var(--bad)" : "var(--text)"}">$<span data-count="${total.toFixed(2)}" data-dec="2">0</span></div></div>
     <div style="flex:1;min-width:220px"><div class="bar" style="height:10px"><i data-w="${Math.min(pct, 100)}" style="background:var(--text)"></i></div>

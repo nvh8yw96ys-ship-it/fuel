@@ -276,6 +276,12 @@ const DATA = (() => {
       ingredients: [["p_bites", 170, "6 oz buffalo chicken bites (about 6–7 pieces)"]],
       steps: ["Microwave 1:30, or air fry 4 min at 380°F to crisp them back up."],
     },
+    pbitesrice: {
+      name: "Buffalo Chicken Bites & Rice", short: "Buffalo Bites & Rice", source: { handle: "Your prep", url: null, note: "6 oz of the Tyson buffalo bites over 2 cups of rice, so the bites work as a full meal." },
+      servings: 1, servingLabel: "plate", method: "Reheat", time: "3 min", tags: ["microwave", "campus"],
+      ingredients: [["p_bites", 170, "6 oz buffalo chicken bites (about 6–7 pieces)"], ["rice", 114, "2 cups cooked white rice"]],
+      steps: ["Cook the bites per the bag (air fryer 380°F for 10–12 min is crispiest), or microwave 1:30 if already cooked.", "Serve over 2 cups of warm rice. Packed: keep the bites and rice in one container and microwave 2:30."],
+    },
     pbsand: {
       name: "PB & Honey Sandwich", short: "PB & Honey Sandwich", emoji: "🥜",
       source: null, servings: 1, servingLabel: "sandwich", method: "No cook", time: "2 min", tags: ["no-cook", "cold", "campus"],
@@ -367,21 +373,36 @@ const DATA = (() => {
       ["13:00", "pchicken", 1, "home", "microwave", "Thawed overnight"], ["16:00", "pbeef", 1, "home", "microwave", "Thawed overnight"],
       ["18:30", "lonestar", 1, "home", "microwave", "Thawed overnight"], ["20:30", "pbites", 1, "home", "microwave", ""],
       ["21:30", "pchicken", 1, "home", "microwave", ""], ["22:00", "milkglass", 1, "home", "none", "Shop and prep for next week today"]],
+    // Week of Nov 9: taco beef, 2 bags blackened alfredo, 3 bags buffalo bites, eggs + chorizo
+    "2026-11-09": [["7:00", "pshake", 1, "home", "none", "Shake before you leave"], ["7:10", "pscramble", 1, "home", "cook", ""], ["10:30", "pbsand", 1, "campus", "cold", "Packed"], ["12:45", "pbeef", 1, "campus", "microwave", "Packed"], ["15:30", "pbsand", 1, "campus", "cold", "Backpack snack"], ["18:15", "pbitesrice", 1, "campus", "microwave", "Packed (lunch bag + ice pack)"], ["21:15", "pbites", 1, "home", "microwave", "Home"], ["21:45", "milkglass", 1, "home", "none", ""], ["22:15", "milkglass", 1, "home", "none", "Second glass: long-day top-up"]],
+    "2026-11-10": [["8:30", "pscramble", 1, "home", "cook", ""], ["9:30", "pshake", 1, "home", "none", ""], ["10:30", "pbsand", 1, "home", "cold", "Before class"], ["12:30", "pbeef", 1, "campus", "microwave", "Packed"], ["15:00", "pbsand", 1, "campus", "cold", "Before the walk home"], ["18:30", "palfredo", 1, "home", "microwave", ""], ["20:30", "pbites", 1, "home", "microwave", ""], ["21:30", "milkglass", 1, "home", "none", ""], ["22:00", "pbsand", 1, "home", "cold", ""]],
+    "2026-11-11": [["7:00", "pshake", 1, "home", "none", "Shake before you leave"], ["7:10", "pscramble", 1, "home", "cook", ""], ["10:30", "pbsand", 1, "campus", "cold", "Packed"], ["13:15", "pbeef", 1, "campus", "microwave", "Packed"], ["16:00", "pbsand", 1, "campus", "cold", "Backpack snack"], ["19:15", "palfredo", 1, "home", "microwave", ""], ["20:30", "pbsand", 1, "home", "cold", ""], ["21:00", "pbites", 1, "home", "microwave", ""], ["21:30", "milkglass", 1, "home", "none", ""]],
+    "2026-11-12": [["8:30", "pscramble", 1, "home", "cook", ""], ["9:30", "pshake", 1, "home", "none", ""], ["11:45", "pbsand", 1, "campus", "cold", "Between classes"], ["13:15", "palfredo", 1, "home", "microwave", "Home for lunch"], ["16:00", "pbites", 1, "home", "microwave", ""], ["18:30", "pbitesrice", 1, "home", "microwave", ""], ["20:30", "pbsand", 1, "home", "cold", ""], ["21:30", "milkglass", 1, "home", "none", ""], ["22:00", "pbsand", 1, "home", "cold", ""]],
+    "2026-11-13": [["9:00", "pscramble", 1, "home", "cook", ""], ["10:00", "pshake", 1, "home", "none", ""], ["13:00", "pbeef", 1, "home", "microwave", "Thawed overnight"], ["15:00", "pbsand", 1, "home", "cold", ""], ["16:30", "pbites", 1, "home", "microwave", ""], ["19:00", "palfredo", 1, "home", "microwave", ""], ["20:00", "pbsand", 1, "home", "cold", ""], ["21:00", "pbites", 1, "home", "microwave", ""], ["21:30", "milkglass", 1, "home", "none", ""], ["22:00", "milkglass", 1, "home", "none", ""]],
+    "2026-11-14": [["9:30", "pscramble", 1, "home", "cook", ""], ["10:30", "pshake", 1, "home", "none", ""], ["13:30", "palfredo", 1, "home", "microwave", ""], ["15:00", "pbsand", 1, "home", "cold", ""], ["16:30", "pbites", 1, "home", "microwave", ""], ["19:00", "pbitesrice", 1, "home", "microwave", ""], ["20:30", "pbsand", 1, "home", "cold", ""], ["21:30", "milkglass", 1, "home", "none", ""], ["22:00", "pbsand", 1, "home", "cold", ""]],
+    "2026-11-15": [["9:30", "pscramble", 1, "home", "cook", ""], ["10:30", "pshake", 1, "home", "none", ""], ["13:30", "palfredo", 1, "home", "microwave", ""], ["15:00", "pbsand", 1, "home", "cold", ""], ["16:30", "pbites", 1, "home", "microwave", ""], ["19:00", "pbitesrice", 1, "home", "microwave", ""], ["20:30", "pbsand", 1, "home", "cold", ""], ["21:30", "milkglass", 1, "home", "none", ""], ["22:00", "pbsand", 1, "home", "cold", "Shop and prep for next week today"]],
   };
-  // Weekly swaps on top of the rotation. Each "burritos" slot becomes the egg + chorizo scramble;
-  // the first one keeps its time, a second one (Mon/Wed campus) becomes a packed PB sandwich, and days
-  // with a single burrito slot get an extra PB sandwich 2 h later to make up the calories.
-  const SWAPS = [
-    { from: "2026-11-09", to: "2026-11-15", label: "Eggs + chorizo week", replace: "burritos", with: "pscramble", topUp: "pbsand",
-      note: "Using up your eggs and chorizo instead of making burritos. Cook the scramble fresh each morning." },
-  ];
-  const PREP = {
+  // Optional swaps on top of the rotation for a date range, e.g.
+  // { from: "2026-11-16", to: "2026-11-22", replace: "burritos", with: "pscramble", topUp: "pbsand" }.
+  // The first matching slot becomes `with`; extra slots become `topUp`, or one `topUp` is added 2 h later.
+  const SWAPS = [];
+  // Prep weeks (shown on the Week plan when that week has OVERRIDES).
+  const PREP = [];
+  PREP.push({
     label: "Your Monday prep", from: "2026-11-02", to: "2026-11-08",
     inventory: [["Chicken breast", "8 portions (4.85 lb)"], ["Taco ground beef", "4 portions (2 lb)"], ["Jalapeño sausage", "10 links → 5 meals"],
       ["Lone Star Spaghetti", "5 containers"], ["Blackened Chicken Alfredo", "~6 cups → 3 meals"], ["Buffalo chicken bites", "24 oz → 4 snacks"],
       ["Eggs + chorizo", "36 eggs, ½ pack chorizo"], ["Whole milk", "~2 gallons for the week"], ["Whey protein", "1 scoop a day"], ["White rice", "2 cups per rice meal (cook more as needed)"]],
     freeze: "Cooked food is good for about 4 days in the fridge, so Monday's prep is fine through Thursday. Tonight (Tue), freeze the Fri–Sun portions: 5 chicken, 2 taco beef, 2 Lone Star, and their rice. Move each one to the fridge the night before. Sausage links keep about a week in the fridge. If the alfredo and bites are still in their frozen bags, cook them the day you eat them.",
-  };
+  });
+  PREP.push({
+    label: "Your food this week", from: "2026-11-09", to: "2026-11-15",
+    inventory: [["Taco ground beef", "4 portions (2 lb) → Mon, Tue, Wed, Fri"], ["Blackened Chicken Alfredo", "2 family bags (~12 cups) → 6 meals of 2 cups"],
+      ["Buffalo chicken bites", "3 bags (72 oz) → 12 servings of 6 oz: 4 over rice, 8 as snacks"], ["Eggs + chorizo", "~28 eggs, ~7 oz chorizo (4 eggs + 1 oz a morning)"],
+      ["Whole milk", "~3 gallons (shake + glasses)"], ["Whey protein", "1 scoop a day"], ["Bread + peanut butter", "19 PB & honey sandwiches → ~2 loaves"],
+      ["White rice", "2 cups per rice meal (cook more as needed)"]],
+    freeze: "Cooked taco beef is good for about 4 days in the fridge. If it was cooked over the weekend, freeze the Friday portion tonight and move it to the fridge Thursday night. The alfredo and bites stay frozen in their bags: cook what you need the day you eat it, or cook a batch and finish it within 3–4 days. Pack Mon/Wed campus meals the night before.",
+  });
 
   // Fast food. Components: [name, kcal, protein, carbs]. Macros are approximate, from each chain's
   // published nutrition info; check the chain's app for current numbers. Prices are rough BCS estimates.
