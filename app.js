@@ -2,7 +2,7 @@
 //  Fuel — bulk dashboard (vanilla JS, saves to localStorage)
 // ============================================================================
 (() => {
-const { STORES, PRODUCTS, RECIPES, ROTATION, SLOTS, DAILY_FIXED, CAMPUS, TEMPLATES, CAL_NOTES, FASTFOOD, OVERRIDES = {}, PREP = null, PROFILE, GOALS, BUDGET } = DATA;
+const { STORES, PRODUCTS, RECIPES, ROTATION, SLOTS, DAILY_FIXED, CAMPUS, TEMPLATES, CAL_NOTES, FASTFOOD, OVERRIDES = {}, SWAPS = [], PREP = null, PROFILE, GOALS, BUDGET } = DATA;
 const KEY = "fuelos.v1";
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -83,6 +83,15 @@ function planFor(d) {
   const rot = rotationFor(wk), w = wd(d), [L, D] = SLOTS[w];
   const items = TEMPLATES[w].map(([time, ref, srv, where, heat, note]) => ({ time, id: ref === "L" ? rot.mains[L] : ref === "D" ? rot.mains[D] : ref, srv, where, heat, note }));
   (rot.extras || []).forEach(([time, id, srv, where, heat, note]) => items.push({ time, id, srv, where, heat, note }));
+  const sw = SWAPS.find((s) => iso(d) >= s.from && iso(d) <= s.to);
+  if (sw) {
+    const hits = items.filter((it) => it.id === sw.replace);
+    hits.forEach((it, i) => {
+      if (i === 0) Object.assign(it, { id: sw.with, srv: 1, where: "home", heat: "cook", note: it.note && /leave/i.test(it.note) ? it.note : "" });
+      else Object.assign(it, { id: sw.topUp, srv: 1, heat: "cold", note: it.where === "campus" ? "Packed" : "" });
+    });
+    if (hits.length === 1) { const [h, m] = hits[0].time.split(":").map(Number); items.push({ time: `${h + 2}:${String(m).padStart(2, "0")}`, id: sw.topUp, srv: 1, where: "home", heat: "cold", note: "Extra sandwich this week (no burritos)" }); }
+  }
   items.sort((a, b) => hNum(a.time) - hNum(b.time));
   return { wk, rot, items };
 }

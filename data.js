@@ -233,17 +233,17 @@ const DATA = (() => {
     },
     // ---------- Logan's Monday prep (week of Nov 2) ----------
     pscramble: {
-      name: "Chorizo & Egg Scramble with Rice", short: "Chorizo & Egg Scramble", source: { handle: "Your prep", url: null, note: "Eggs plus the half pack of San Manuel beef chorizo, which works out to about 1 oz a morning for 6 days." },
+      name: "Chorizo & Egg Scramble with Rice", short: "Chorizo & Egg Scramble", source: { handle: "Your prep", url: null, note: "Your leftover eggs and San Manuel beef chorizo, about 1 oz of chorizo a morning. Replaces the breakfast burritos while the eggs and chorizo last." },
       servings: 1, servingLabel: "plate", method: "Skillet", time: "8 min", tags: ["home"],
-      ingredients: [["p_eggs", 200, "4 large eggs"], ["p_chorizo", 28, "1 oz beef chorizo (⅙ of your half pack)"], ["rice", 57, "1 cup cooked white rice"]],
+      ingredients: [["p_eggs", 200, "4 large eggs"], ["p_chorizo", 28, "1 oz beef chorizo"], ["rice", 114, "2 cups cooked white rice"]],
       steps: ["Crumble the chorizo into a non-stick pan on medium and cook 3–4 min until browned. Don't drain; the fat is calories you want.",
         "Lower the heat, add the 4 whisked eggs, and stir slowly until just set, about 2 min.",
-        "Serve over 1 cup of warmed rice (microwave 1 min with a splash of water)."],
+        "Serve over 2 cups of warmed rice (microwave 1 min with a splash of water)."],
     },
     pshake: {
-      name: "Vanilla Protein Milkshake", short: "Protein Shake", source: { handle: "Your prep", url: null, note: "1 scoop of Optimum Nutrition Vanilla Ice Cream whey in 3 cups of whole milk. Your food already covers protein, so the milk adds the calories." },
+      name: "Vanilla Whey & Whole Milk Shake", short: "Protein Shake", emoji: "🥤", source: { handle: "Your protein", url: null, note: "1 scoop of Optimum Nutrition Gold Standard Whey (Vanilla Ice Cream) in 4 cups of whole milk. Replaces the old mass-gainer shake. Your food already covers protein, so the milk adds the calories." },
       servings: 1, servingLabel: "shake", method: "Shaker / blender", time: "1 min", tags: ["no-cook"],
-      ingredients: [["p_whey", 31, "1 scoop whey (Vanilla Ice Cream)"], ["milk", 732, "3 cups whole milk"]],
+      ingredients: [["p_whey", 31, "1 scoop whey (Vanilla Ice Cream)"], ["milk", 976, "4 cups whole milk"]],
       steps: ["Add the milk first, then the scoop, and shake or blend 20 sec.", "On Mon/Wed, make it before you leave and drink it on the way."],
     },
     pchicken: {
@@ -276,12 +276,6 @@ const DATA = (() => {
       ingredients: [["p_bites", 170, "6 oz buffalo chicken bites (about 6–7 pieces)"]],
       steps: ["Microwave 1:30, or air fry 4 min at 380°F to crisp them back up."],
     },
-    shake: {
-      name: "Homemade Mass-Gainer Shake", short: "Mass Gainer Shake", emoji: "🥤",
-      source: null, servings: 1, servingLabel: "shake", method: "Blender", time: "3 min", tags: ["no-cook", "home"],
-      ingredients: [["milk", 610, "2½ cups whole milk"], ["oats", 40, "½ cup old-fashioned oats"], ["pb", 64, "4 Tbsp peanut butter"], ["bananas", 118, "1 banana"]],
-      steps: ["Blend the oats dry for 10 sec so they turn to powder (makes it smooth, not gritty).", "Add the milk, peanut butter and banana. Blend 30 sec.", "Freezing the banana the night before makes it a milkshake."],
-    },
     pbsand: {
       name: "PB & Honey Sandwich", short: "PB & Honey Sandwich", emoji: "🥜",
       source: null, servings: 1, servingLabel: "sandwich", method: "No cook", time: "2 min", tags: ["no-cook", "cold", "campus"],
@@ -303,7 +297,7 @@ const DATA = (() => {
     { name: "Rotation C", mains: ["carneasada", "lonestar", "shrimppasta"] },
   ];
   const SLOTS = [[0, 1], [2, 0], [1, 2], [0, 1], [2, 0], [1, 2], [0, 1]]; // [lunch, dinner] per weekday Mon..Sun
-  const DAILY_FIXED = [["burritos", 2], ["shake", 1], ["pbsand", 1], ["milkglass", 1]];
+  const DAILY_FIXED = [["burritos", 2], ["pshake", 1], ["pbsand", 1], ["milkglass", 1]];
 
   // Campus hours from Logan (0 = Mon). null = home all day.
   const CAMPUS = [[8, 21], [10.83, 15.5], [8, 18.5], [10.83, 12.5], null, null, null];
@@ -312,30 +306,30 @@ const DATA = (() => {
   // slot "L"/"D" = lunch main / dinner main.
   const TEMPLATES = [
     // Monday 8a–9p (long day: 4 packed items)
-    [["7:00", "shake", 1, "home", "none", "Blend before you leave"], ["7:10", "burritos", 1, "home", "microwave", "Eat 1 now"],
+    [["7:00", "pshake", 1, "home", "none", "Shake before you leave"], ["7:10", "burritos", 1, "home", "microwave", "Eat 1 now"],
      ["10:30", "burritos", 1, "campus", "microwave", "Packed — thawed by now, 1:15 in the microwave"], ["12:45", "L", 1, "campus", "microwave", "Packed container"],
      ["15:30", "pbsand", 1, "campus", "cold", "Backpack snack"], ["18:15", "D", 1, "campus", "microwave", "Packed container (keep in lunch bag with ice pack)"],
      ["21:30", "milkglass", 1, "home", "none", "Home — drink before bed"]],
     // Tuesday 10:50a–3:30p
-    [["8:30", "burritos", 2, "home", "microwave", ""], ["9:30", "shake", 1, "home", "none", ""],
+    [["8:30", "burritos", 2, "home", "microwave", ""], ["9:30", "pshake", 1, "home", "none", ""],
      ["12:30", "L", 1, "campus", "microwave", "Packed container"], ["15:00", "pbsand", 1, "campus", "cold", "Before the walk home"],
      ["18:30", "D", 1, "home", "microwave", ""], ["21:30", "milkglass", 1, "home", "none", ""]],
     // Wednesday 8a–6:30p
-    [["7:00", "shake", 1, "home", "none", "Blend before you leave"], ["7:10", "burritos", 1, "home", "microwave", ""],
+    [["7:00", "pshake", 1, "home", "none", "Shake before you leave"], ["7:10", "burritos", 1, "home", "microwave", ""],
      ["10:30", "burritos", 1, "campus", "microwave", "Packed"], ["13:15", "L", 1, "campus", "microwave", "Packed container"],
      ["16:00", "pbsand", 1, "campus", "cold", "Backpack snack"], ["19:15", "D", 1, "home", "microwave", ""], ["21:30", "milkglass", 1, "home", "none", ""]],
     // Thursday 10:50a–12:30p
-    [["8:30", "burritos", 2, "home", "microwave", ""], ["9:30", "shake", 1, "home", "none", ""],
+    [["8:30", "burritos", 2, "home", "microwave", ""], ["9:30", "pshake", 1, "home", "none", ""],
      ["11:45", "pbsand", 1, "campus", "cold", "Between classes"], ["13:15", "L", 1, "home", "microwave", "Home for lunch"],
      ["18:30", "D", 1, "home", "microwave", ""], ["21:30", "milkglass", 1, "home", "none", ""]],
     // Friday — home
-    [["9:00", "burritos", 2, "home", "microwave", ""], ["10:00", "shake", 1, "home", "none", ""], ["13:00", "L", 1, "home", "microwave", ""],
+    [["9:00", "burritos", 2, "home", "microwave", ""], ["10:00", "pshake", 1, "home", "none", ""], ["13:00", "L", 1, "home", "microwave", ""],
      ["16:00", "pbsand", 1, "home", "cold", ""], ["19:00", "D", 1, "home", "microwave", ""], ["21:30", "milkglass", 1, "home", "none", ""]],
     // Saturday — grocery day
-    [["9:30", "burritos", 2, "home", "microwave", ""], ["10:30", "shake", 1, "home", "none", "Then hit Sam's → Walmart → H-E-B"], ["13:30", "L", 1, "home", "microwave", ""],
+    [["9:30", "burritos", 2, "home", "microwave", ""], ["10:30", "pshake", 1, "home", "none", "Then hit Sam's → Walmart → H-E-B"], ["13:30", "L", 1, "home", "microwave", ""],
      ["16:00", "pbsand", 1, "home", "cold", ""], ["19:00", "D", 1, "home", "microwave", ""], ["21:30", "milkglass", 1, "home", "none", ""]],
     // Sunday — prep day
-    [["9:30", "burritos", 2, "home", "microwave", "Last 2 burritos — make the new batch today"], ["10:30", "shake", 1, "home", "none", "Start the crockpot meals now"],
+    [["9:30", "burritos", 2, "home", "microwave", "Last 2 burritos — make the new batch today"], ["10:30", "pshake", 1, "home", "none", "Start the crockpot meals now"],
      ["13:30", "L", 1, "home", "microwave", ""], ["16:00", "pbsand", 1, "home", "cold", ""], ["19:00", "D", 1, "home", "microwave", ""], ["21:30", "milkglass", 1, "home", "none", ""]],
   ];
 
@@ -374,6 +368,13 @@ const DATA = (() => {
       ["18:30", "lonestar", 1, "home", "microwave", "Thawed overnight"], ["20:30", "pbites", 1, "home", "microwave", ""],
       ["21:30", "pchicken", 1, "home", "microwave", ""], ["22:00", "milkglass", 1, "home", "none", "Shop and prep for next week today"]],
   };
+  // Weekly swaps on top of the rotation. Each "burritos" slot becomes the egg + chorizo scramble;
+  // the first one keeps its time, a second one (Mon/Wed campus) becomes a packed PB sandwich, and days
+  // with a single burrito slot get an extra PB sandwich 2 h later to make up the calories.
+  const SWAPS = [
+    { from: "2026-11-09", to: "2026-11-15", label: "Eggs + chorizo week", replace: "burritos", with: "pscramble", topUp: "pbsand",
+      note: "Using up your eggs and chorizo instead of making burritos. Cook the scramble fresh each morning." },
+  ];
   const PREP = {
     label: "Your Monday prep", from: "2026-11-02", to: "2026-11-08",
     inventory: [["Chicken breast", "8 portions (4.85 lb)"], ["Taco ground beef", "4 portions (2 lb)"], ["Jalapeño sausage", "10 links → 5 meals"],
@@ -409,6 +410,6 @@ const DATA = (() => {
   const GOALS = { kcal: 5000, protein: 220, carbs: 400 };
   const BUDGET = 100;
 
-  return { STORES: S, PRODUCTS: P, RECIPES: R, ROTATION, SLOTS, DAILY_FIXED, CAMPUS, TEMPLATES, CAL_NOTES, FASTFOOD, OVERRIDES, PREP, PROFILE, GOALS, BUDGET };
+  return { STORES: S, PRODUCTS: P, RECIPES: R, ROTATION, SLOTS, DAILY_FIXED, CAMPUS, TEMPLATES, CAL_NOTES, FASTFOOD, OVERRIDES, SWAPS, PREP, PROFILE, GOALS, BUDGET };
 })();
 if (typeof module !== "undefined") module.exports = DATA;
