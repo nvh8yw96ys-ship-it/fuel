@@ -253,9 +253,9 @@ const DATA = (() => {
       steps: ["Sprinkle 1 Tbsp water over the rice, cover loosely, and microwave 2:30, stirring halfway.", "Chicken breast dries out; a splash of water or a sauce packet helps."],
     },
     pbeef: {
-      name: "Taco Beef & Rice", short: "Taco Beef & Rice", source: { handle: "Your prep", url: null, note: "2 lb of H-E-B 96% lean beef with 1 packet of Old El Paso taco seasoning, split into 4 portions." },
-      servings: 1, servingLabel: "container", method: "Reheat", time: "2.5 min", tags: ["microwave", "campus"],
-      ingredients: [["p_beef96", 227, "¼ of the taco beef (½ lb raw)"], ["p_taco", 7, "¼ packet taco seasoning (already mixed in)"], ["rice", 114, "2 cups cooked white rice"]],
+      name: "Taco Beef & Rice", short: "Taco Beef & Rice", source: { handle: "Your prep", url: null, note: "2 lb of H-E-B 96% lean beef with 1 packet of Old El Paso taco seasoning, split into 8 portions of ¼ lb, each with about ¾ cup of rice." },
+      servings: 1, servingLabel: "container", method: "Reheat", time: "2 min", tags: ["microwave", "campus"],
+      ingredients: [["p_beef96", 113, "⅛ of the taco beef (¼ lb raw)"], ["p_taco", 3.5, "⅛ packet taco seasoning (already mixed in)"], ["rice", 43, "¾ cup cooked white rice"]],
       steps: ["Microwave 2:30 with 1 Tbsp water, stirring halfway."],
     },
     psausage: {
@@ -376,7 +376,7 @@ const DATA = (() => {
     // Week of Nov 9: taco beef, 2 bags blackened alfredo, 3 bags buffalo bites, eggs + chorizo
     "2026-11-09": [["7:00", "pshake", 1, "home", "none", "Shake before you leave"], ["7:10", "pscramble", 1, "home", "cook", ""], ["10:30", "pbsand", 1, "campus", "cold", "Packed"], ["12:45", "pbeef", 1, "campus", "microwave", "Packed"], ["15:30", "pbsand", 1, "campus", "cold", "Backpack snack"], ["18:15", "pbitesrice", 1, "campus", "microwave", "Packed (lunch bag + ice pack)"], ["21:15", "pbites", 1, "home", "microwave", "Home"], ["21:45", "milkglass", 1, "home", "none", ""], ["22:15", "milkglass", 1, "home", "none", "Second glass: long-day top-up"]],
     "2026-11-10": [["8:30", "pscramble", 1, "home", "cook", ""], ["9:30", "pshake", 1, "home", "none", ""], ["10:30", "pbsand", 1, "home", "cold", "Before class"], ["12:30", "pbeef", 1, "campus", "microwave", "Packed"], ["15:00", "pbsand", 1, "campus", "cold", "Before the walk home"], ["18:30", "palfredo", 1, "home", "microwave", ""], ["20:30", "pbites", 1, "home", "microwave", ""], ["21:30", "milkglass", 1, "home", "none", ""], ["22:00", "pbsand", 1, "home", "cold", ""]],
-    "2026-11-11": [["7:00", "pshake", 1, "home", "none", "Shake before you leave"], ["7:10", "pscramble", 1, "home", "cook", ""], ["10:30", "pbsand", 1, "campus", "cold", "Packed"], ["13:15", "pbeef", 1, "campus", "microwave", "Packed"], ["16:00", "pbsand", 1, "campus", "cold", "Backpack snack"], ["19:15", "palfredo", 1, "home", "microwave", ""], ["20:30", "pbsand", 1, "home", "cold", ""], ["21:00", "pbites", 1, "home", "microwave", ""], ["21:30", "milkglass", 1, "home", "none", ""]],
+    "2026-11-11": [["7:00", "pshake", 1, "home", "none", "Shake before you leave"], ["7:10", "pscramble", 1, "home", "cook", ""], ["10:30", "pbeef", 2, "campus", "microwave", "Packed: 2 containers"], ["13:15", "pbeef", 1, "campus", "microwave", "Packed"], ["16:00", "pbeef", 1, "campus", "microwave", "Packed (lunch bag + ice pack)"], ["19:15", "palfredo", 1, "home", "microwave", ""], ["20:30", "milkglass", 1, "home", "none", ""], ["21:00", "pbites", 1, "home", "microwave", ""], ["21:30", "pshake", 1, "home", "none", "Second shake: replaces the PB sandwiches"], ["22:00", "milkglass", 1, "home", "none", ""]],
     "2026-11-12": [["8:30", "pscramble", 1, "home", "cook", ""], ["9:30", "pshake", 1, "home", "none", ""], ["11:45", "pbsand", 1, "campus", "cold", "Between classes"], ["13:15", "palfredo", 1, "home", "microwave", "Home for lunch"], ["16:00", "pbites", 1, "home", "microwave", ""], ["18:30", "pbitesrice", 1, "home", "microwave", ""], ["20:30", "pbsand", 1, "home", "cold", ""], ["21:30", "milkglass", 1, "home", "none", ""], ["22:00", "pbsand", 1, "home", "cold", ""]],
     "2026-11-13": [["9:00", "pscramble", 1, "home", "cook", ""], ["10:00", "pshake", 1, "home", "none", ""], ["13:00", "pbeef", 1, "home", "microwave", "Thawed overnight"], ["15:00", "pbsand", 1, "home", "cold", ""], ["16:30", "pbites", 1, "home", "microwave", ""], ["19:00", "palfredo", 1, "home", "microwave", ""], ["20:00", "pbsand", 1, "home", "cold", ""], ["21:00", "pbites", 1, "home", "microwave", ""], ["21:30", "milkglass", 1, "home", "none", ""], ["22:00", "milkglass", 1, "home", "none", ""]],
     "2026-11-14": [["9:30", "pscramble", 1, "home", "cook", ""], ["10:30", "pshake", 1, "home", "none", ""], ["13:30", "palfredo", 1, "home", "microwave", ""], ["15:00", "pbsand", 1, "home", "cold", ""], ["16:30", "pbites", 1, "home", "microwave", ""], ["19:00", "pbitesrice", 1, "home", "microwave", ""], ["20:30", "pbsand", 1, "home", "cold", ""], ["21:30", "milkglass", 1, "home", "none", ""], ["22:00", "pbsand", 1, "home", "cold", ""]],
@@ -397,7 +397,7 @@ const DATA = (() => {
   });
   PREP.push({
     label: "Your food this week", from: "2026-11-09", to: "2026-11-15",
-    inventory: [["Taco ground beef", "4 portions (2 lb) → Mon, Tue, Wed, Fri"], ["Blackened Chicken Alfredo", "2 family bags (~12 cups) → 6 meals of 2 cups"],
+    inventory: [["Taco ground beef", "8 portions of ¼ lb + ¾ cup rice (2 lb) → Mon, Tue, Wed ×4, Fri, 1 spare"], ["Blackened Chicken Alfredo", "2 family bags (~12 cups) → 6 meals of 2 cups"],
       ["Buffalo chicken bites", "3 bags (72 oz) → 12 servings of 6 oz: 4 over rice, 8 as snacks"], ["Eggs + chorizo", "~28 eggs, ~7 oz chorizo (4 eggs + 1 oz a morning)"],
       ["Whole milk", "~3 gallons (shake + glasses)"], ["Whey protein", "1 scoop a day"], ["Bread + peanut butter", "19 PB & honey sandwiches → ~2 loaves"],
       ["White rice", "2 cups per rice meal (cook more as needed)"]],
