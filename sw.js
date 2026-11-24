@@ -1,13 +1,13 @@
 // Fuel service worker: network-first, so published updates show up on the next launch;
 // falls back to the cached copy when offline.
-const CACHE = "fuel-v1";
+const CACHE = "fuel-v2";
 const CORE = ["./", "./index.html", "./app.js", "./data.js", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));
 });
 self.addEventListener("activate", (e) => {
-  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k.startsWith("fuel-") && k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
 });
 self.addEventListener("fetch", (e) => {
   const req = e.request;
