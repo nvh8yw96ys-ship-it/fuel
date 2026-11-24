@@ -64,7 +64,7 @@ S.settings = Object.assign(structuredClone(defaults.settings), S.settings);
 if (S.view === "today") S.view = "dash";
 S.customFF ||= [];
 if (!S.weights.length) S.weights.push({ date: S.settings.planStart, lb: PROFILE.weightLb });
-const save = () => localStorage.setItem(KEY, JSON.stringify(S));
+const save = () => { localStorage.setItem(KEY, JSON.stringify(S)); hubSync(); };
 let cur = midnight(today);
 const dayLog = (k) => (S.logs[k] ||= { done: {}, extra: [], creatine: 0 });
 
@@ -556,5 +556,22 @@ document.addEventListener("change", (e) => {
 });
 document.addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target.closest(".xadd")) $("[data-act=addx]").click(); });
 window.addEventListener("resize", syncNav);
+// ---------- dashboard hub: publish a small summary of today for /hub/ (same origin) ----------
+function hubSync() {
+  try {
+    const now = new Date(), d = midnight(now), k = iso(d), log = S.logs[k] || { done: {}, extra: [], creatine: 0 }, plan = planFor(d), { t, planned } = totalsFor(d);
+    const nowH = now.getHours() + now.getMinutes() / 60;
+    const open = plan ? plan.items.filter((_, i) => !log.done[i]) : [];
+    const nx = open.find((it) => hNum(it.time) >= nowH - 0.75) || open[open.length - 1];
+    const ws = [...S.weights].sort((a, b) => a.date.localeCompare(b.date)), wk = weekIndex(d);
+    localStorage.setItem("hub.fuel", JSON.stringify({ v: 1, updated: now.toISOString(), date: k, eaten: t.map(R0), planned: planned.map(R0), goals: S.settings.goals,
+      meals: { done: plan ? plan.items.filter((_, i) => log.done[i]).length : 0, all: plan?.items.length || 0 },
+      next: nx ? { time: t12(nx.time), name: RECIPES[nx.id]?.short || RECIPES[nx.id]?.name || nx.id } : null,
+      creatine: { got: log.creatine || 0, target: creatineTarget(d) },
+      weight: { latest: ws[ws.length - 1]?.lb ?? PROFILE.weightLb, start: PROFILE.weightLb, goal: PROFILE.goalLb },
+      week: wk >= 0 ? `Week ${wk + 1} · ${rotationFor(wk).name}` : "" }));
+  } catch {}
+}
+hubSync();
 render(true);
 })();
